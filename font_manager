@@ -1,0 +1,72 @@
+
+using { /Fortnite.com/Devices }
+using { /Verse.org/Simulation }
+using { /UnrealEngine.com/Temporary/Diagnostics }
+using { /UnrealEngine.com/Temporary/UI }
+using { /Fortnite.com/UI }
+using { /UnrealEngine.com/Temporary/SpatialMath }
+using { /Verse.org/Colors/NamedColors }
+using { /Verse.org/Assets }
+using { /Verse.org/Colors }
+using { /Verse.org/Random }
+using { /Fortnite.com/Characters }
+using { /Fortnite.com/AI }
+using { config.ui_config}
+
+
+
+font_manager := class(creative_device):
+    AllCharacters : [char]texture = map:
+        '0' => fonts.n0, '1' => fonts.n1, '2' => fonts.n2, '3' => fonts.n3, '4' => fonts.n4,
+        '5' => fonts.n5, '6' => fonts.n6, '7' => fonts.n7, '8' => fonts.n8, '9' => fonts.n9,
+        'a' => fonts.a, 'b' => fonts.b, 'c' => fonts.c, 'd' => fonts.d, 'e' => fonts.e, 'f' => fonts.f, 'g' => fonts.g, 'h' => fonts.h, 'i' => fonts.i,'j' => fonts.j,'k' => fonts.k,'l' => fonts.l,'m' => fonts.m,'n' => fonts.n,'o' => fonts.o,'p' => fonts.P,'q' => fonts.q,'r' => fonts.r,'s' => fonts.s,'t' => fonts.t,'u' => fonts.u,'v' => fonts.v,'w' => fonts.capital_w,'x' => fonts.x,'y' => fonts.y,'z' => fonts.z,
+        'A' => fonts.capital_A, 'B' => fonts.capital_b, 'C' => fonts.capital_C, 'D' => fonts.capital_D, 'E' => fonts.capital_E, 'G' => fonts.capital_G, 'H' => fonts.capital_h, 'I' => fonts.capital_i, 'J' => fonts.capital_j, 'K' => fonts.capital_k, 'L' => fonts.capital_l, 'M' => fonts.capital_m, 'N' => fonts.capital_n, 'O' => fonts.capital_o, 'P' => fonts.capital_p, 'Q' => fonts.capital_q, 'R' => fonts.capital_r, 'S' => fonts.capital_s, 'T' => fonts.capital_t, 'U' => fonts.capital_u, 'V' => fonts.capital_v, 'W' => fonts.capital_w, 'X' => fonts.capital_x, 'Y' => fonts.capital_y, 'Z' => fonts.capital_z,
+        ''' => fonts.apostrophe, '!' => fonts.exclamation, '?' => fonts.question, ',' => fonts.comma, '.' => fonts.dot, ':' => fonts.doubledot, ' ' => fonts.space,
+        'F' => fonts.capital_F
+
+    FontSize : int = 70
+
+    FontColor : color = White
+
+    TextStackBox : stack_box = stack_box{Orientation := orientation.Horizontal}
+
+    TheText : string = "WHAAAAAAAAAAT!!!"
+    OnBegin<override>()<suspends>:void=
+
+        CreateText(TheText)
+
+        for(Player : GetPlayspace().GetPlayers(), PlayerUI := GetPlayerUI[Player]){
+            # PlayerUI.AddWidget(CreateCanvas())
+            Print("Adding UI")
+            }
+
+
+    CreateText(Text : string ):void=
+        for(Char : Text, Texture := AllCharacters[Char]):
+            Print("text")
+            TextStackBox.AddWidget(
+                stack_box_slot:
+                    Widget := texture_block{DefaultImage := Texture, DefaultDesiredSize := vector2{X := FontSize * 1.0, Y := FontSize * 1.0}, DefaultTint := FontColor}
+                    Padding := margin{Left := -25.0}
+                )
+    CreateCanvas():canvas=
+        return canvas:
+            Slots := array:
+                canvas_slot:
+                    Widget := overlay:
+                        Slots := array:
+                            overlay_slot:
+                                Widget := color_block:
+                                    DefaultDesiredSize := vector2{X := 1138.49939, Y := 443.58783}
+                                    DefaultColor := Black
+                                    DefaultOpacity := 0.7
+                                HorizontalAlignment := HorFill
+                                VerticalAlignment := VerFill
+                            overlay_slot:
+                                Widget := TextStackBox
+                                HorizontalAlignment := HorCen
+                                VerticalAlignment := VerCen
+                                Padding := margin{Left := 50.0, Right := 50.0}
+                    Anchors := anchors{Minimum := vector2{X := 0.5, Y := 0.5}, Maximum := vector2{X := 0.5, Y := 0.5}}
+                    Alignment := vector2{X := 0.5, Y := 0.5}
+                    SizeToContent := true
